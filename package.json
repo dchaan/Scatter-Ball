@@ -1,9 +1,11 @@
 {
-  "name": "Scatter-Ball",
+  "name": "scatter-ball",
   "version": "1.0.0",
   "description": "Game:  <br>Scatter Ball (carnival game)",
   "main": "index.js",
   "scripts": {
+    "start": "node app.js", 
+    "start:debug": "node --inspect app.js", 
     "watch": "webpack --watch --mode=development",
     "build": "webpack --mode=production"
   },
@@ -40,11 +42,5 @@
 
   "engines": {
     "node": "14.18.1"
-  },
-  "scripts": {
-    "start": "node app.js", 
-    "start:debug": "node --inspect app.js", 
-    "watch": "webpack --watch --mode=development",
-    "build": "webpack --mode=production"
-  }  
+  }
 }
