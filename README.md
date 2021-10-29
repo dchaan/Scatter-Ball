@@ -28,7 +28,6 @@ Current player’s score on the left
 Current player’s remaining lives on top right (3)
 <br>
 Start/pause button on the right side, underneath remaining lives!
-
 <br>
 Instructions on the right side, underneath start/pause button
 <br>
