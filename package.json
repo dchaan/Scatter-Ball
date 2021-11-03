@@ -4,8 +4,8 @@
   "description": "Game:  <br>Scatter Ball (carnival game)",
   "main": "index.js",
   "scripts": {
-    "start": "node app.js", 
-    "start:debug": "node --inspect app.js", 
+    "start": "node app.js",
+    "start:debug": "node --inspect app.js",
     "watch": "webpack --watch --mode=development",
     "build": "webpack --mode=production"
   },
@@ -21,10 +21,10 @@
   },
   "homepage": "https://github.com/dchaan/Scatter-Ball#readme",
   "dependencies": {
-    "@babel/core": "^7.15.8",
-    "@babel/preset-env": "^7.15.8",
+    "@babel/core": "^7.16.0",
+    "@babel/preset-env": "^7.16.0",
     "babel-loader": "^8.2.3",
-    "core-js": "^3.19.0",
+    "core-js": "^3.19.1",
     "css-loader": "^6.5.0",
     "dotenv": "^10.0.0",
     "express": "^4.17.1",
@@ -39,7 +39,6 @@
   "browserslist": [
     "defaults"
   ],
-
   "engines": {
     "node": "14.18.1"
   }
