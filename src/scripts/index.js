@@ -1,61 +1,184 @@
-// get a refrence to the canvas and its context
 let canvas = document.getElementById("canvas");
-let ctx = canvas.getContext("2d");
+let contxt = canvas.getContext("2d");
+let lefty = false;
+let righty = false;
+let gameOver = true;
+let score = 0;
+let lives = 3;
+let track = 0;
+let level = 1;
 
-// drop marble every 4sec
-let dropRate = 4000;
-// set how fast the objects will fall
-let marbleSpeed = 0.70;
-// when last marble was dropped
-let lastDropped = -1;
-// this array holds all spawned object
-let marbles = [];
-// start animating
-animate();
+document.addEventListener("keydown", keysDown, false);
+document.addEventListener("keyup", keysUp, false);
 
-
-function generateMarble() {
-    let object = {
-        // set x randomly but at least 15px off the canvas edges
-        x: Math.random() * (canvas.width - 30) + 15,
-        // set y to start on the line where marbles are spawned
-        y: 0,
-    }
-    marbles.push(object);
+// when key is pressed down, move
+function keysDown(e) {
+	if(e.keyCode == 39){
+		righty = true;
+	}
+	else if(e.keyCode == 37){
+		lefty = true;
+	}
+	else if(e.keyCode == 32 && gameOver){
+		playAgain();
+	}
+}
+// when key is released, stop moving
+function keysUp(e) {
+	if(e.keyCode == 39){
+		righty = false;
+	}
+	else if(e.keyCode == 37){
+		lefty = false;
+	}
 }
 
-function animate() {
-    // get the elapsed time
-    let time = Date.now();
-    // see if its time to spawn a new object
-    if (time > (lastDropped + dropRate)) {
-        lastDropped = time;
-        generateMarble();
-        dropRate*=1;
-    }
+// player specs
+let player = {
+	size: 40,
+	x: (canvas.width - 30),
+	y: canvas.height - 30,
+};
 
-    // request another animation frame
-    requestAnimationFrame(animate);
+// specs for balls you want to collect
+let ballObj = {
+	x:[],
+	y:[],
+	speed: 1,
+	state: []
+};
 
-    // clear the canvas so all marbles can be 
-    // redrawn in new positions
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
+let numBalls = 0;
+let rad = 10;
 
-    // draw the line where new marbles are spawned
-    ctx.beginPath();
-    ctx.moveTo(0, 0);
-    ctx.lineTo(canvas.width, 0);
-    ctx.stroke();
+// adds value to x property of ballObj
+function drawNewGood(){
+	if(Math.random() < .02){
+		ballObj.x.push(Math.random() * canvas.width);
+		ballObj.y.push(0);
+		ballObj.state.push(true);
 
-    // move each marble down the canvas
-    for (let i = 0; i < marbles.length; i++) {
-        let marble = marbles[i];
-        marble.y += marbleSpeed;
-        ctx.beginPath();
-        ctx.arc(marble.x, marble.y, 15, 0, Math.PI * 2);
-        ctx.closePath();
-        ctx.fillStyle = 'black';
-        ctx.fill();
-    }
+	}
+	numBalls = ballObj.x.length;
+}
+
+// draws balls
+function drawBall() {
+	for(let i = 0; i < numBalls; i++){
+		if(ballObj.state[i] === true){
+			contxt.beginPath();
+			contxt.arc(ballObj.x[i], ballObj.y[i], rad, 0, Math.PI * 2);
+			contxt.fillStyle = 'blue';
+			contxt.fill();
+			contxt.closePath();
+		}
+	}
+}
+
+// draw player
+function drawPlayer() {
+	contxt.beginPath();
+	contxt.rect(player.x, player.y, player.size, player.size);
+	contxt.fillStyle = 'black';
+	contxt.fill();
+	contxt.closePath();
+}
+
+// moves objects in play
+function playUpdate() {
+	if(lefty && player.x > 0){
+		player.x -= 6;
+	}
+	if(righty && player.x + player.size < canvas.width) {
+		player.x += 6;
+	}
+	for(let i = 0; i < numBalls; i++){
+		ballObj.y[i] += ballObj.speed;
+	}
+	
+	
+	// collision detection
+	for(let i = 0; i < numBalls; i++){
+		if(ballObj.state[i]){
+			if(player.x < ballObj.x[i] + rad && player.x + 30 + rad> ballObj.x[i] && player.y < ballObj.y[i] + rad && player.y + 30 > ballObj.y[i]){
+				score++
+				ballObj.state[i] = false;
+			}
+		}
+		if(ballObj.y[i] + rad > canvas.height){
+			ballObj.x.shift();
+			ballObj.y.shift();
+			ballObj.state.shift();
+			track++;
+		}
+	}
+	
+	// switch(score){
+	// 	case 20:
+	// 		ballObj.speed = 2;
+	// 		level = 2;
+	// 		break;
+	// 	case 30:
+	// 		level = 3;
+	// 		break;
+	// 	case 40: 
+	// 		ballObj.speed = 3;
+	// 		level = 4;
+	// 		break;
+	// 	case 50:
+	// 		level = 5;
+	// 		break;
+	// }
 
 }
+//signals end of game and resets x, y, and state arrays for arcs
+function gamesOver(){
+	ballObj.x = [];
+	ballObj.y = [];
+	ballObj.state = [];
+	gameOver = true;
+}
+
+//resets game, life, and score counters
+function playAgain() {
+	gameOver = false;
+	level = 1;
+	score = 0;
+	lives = 3;
+	ballObj.speed = 1;
+}
+function draw(){
+	contxt.clearRect(0, 0, canvas.width, canvas.height);
+	if(!gameOver){
+		drawPlayer();
+		drawBall();
+		playUpdate();
+		drawNewGood();
+			
+		//score
+		contxt.fillStyle = "black";
+		contxt.font = "20px Helvetica";
+		contxt.textAlign = "left";
+		contxt.fillText("Score: " + score, 10, 25);
+	
+		//lives
+		contxt.textAlign = "right";
+		contxt.fillText("Lives: " + lives, 500, 25);
+	}
+	else{
+		contxt.fillStyle = "black";
+		contxt.font = "50px Helvetica";
+		contxt.textAlign = "center";
+		contxt.fillText("GAME OVER!", canvas.width/2, 175);
+		
+		contxt.font = "20px Helvetica";
+		contxt.fillText("PRESS SPACE TO PLAY", canvas.width/2, 475);
+		
+		contxt.fillText("FINAL SCORE: " + score, canvas.width/2, 230);
+	}
+	// document.getElementById("level").innerHTML = "Level: " + level;
+	requestAnimationFrame(draw);
+}
+
+draw();
+
