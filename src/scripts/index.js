@@ -1,182 +1,143 @@
 let canvas = document.getElementById("canvas");
-let contxt = canvas.getContext("2d");
-let lefty = false;
-let righty = false;
+let ctx = canvas.getContext("2d");
+let left = false;
+let right = false;
 let gameOver = true;
 let score = 0;
 let lives = 3;
-let track = 0;
-let level = 1;
+let numBalls = 0;
+let rad = 30;
+let paused = false;
 
 document.addEventListener("keydown", keysDown, false);
 document.addEventListener("keyup", keysUp, false);
+document.getElementById("start-button").addEventListener("click", playAgain);
 
-// when key is pressed down, move
+// key funcs
 function keysDown(e) {
-	if(e.keyCode == 39){
-		righty = true;
+	if (e.keyCode == 39) {
+		right = true;
 	}
-	else if(e.keyCode == 37){
-		lefty = true;
-	}
-	else if(e.keyCode == 32 && gameOver){
-		playAgain();
+	else if (e.keyCode == 37) {
+		left = true;
 	}
 }
-// when key is released, stop moving
 function keysUp(e) {
 	if(e.keyCode == 39){
-		righty = false;
+		right = false;
 	}
 	else if(e.keyCode == 37){
-		lefty = false;
+		left = false;
 	}
 }
 
-// player specs
-let player = {
-	size: 40,
-	x: (canvas.width - 30),
-	y: canvas.height - 30,
-};
-
-// specs for balls you want to collect
 let ballObj = {
 	x:[],
 	y:[],
-	speed: 1,
 	state: []
 };
 
-let numBalls = 0;
-let rad = 10;
-
-// adds value to x property of ballObj
-function drawNewGood(){
-	if(Math.random() < .02){
-		ballObj.x.push(Math.random() * canvas.width);
+// place ball at random x coordinate
+function placeBall() {
+	if (Math.random() < .02) {
+		ballObj.x.push(Math.random() * canvas.width - 50);
 		ballObj.y.push(0);
 		ballObj.state.push(true);
-
 	}
 	numBalls = ballObj.x.length;
 }
 
-// draws balls
 function drawBall() {
-	for(let i = 0; i < numBalls; i++){
-		if(ballObj.state[i] === true){
-			contxt.beginPath();
-			contxt.arc(ballObj.x[i], ballObj.y[i], rad, 0, Math.PI * 2);
-			contxt.fillStyle = 'blue';
-			contxt.fill();
-			contxt.closePath();
+	for (let i = 0; i < numBalls; i++) {
+		if (ballObj.state[i] === true) {
+      let ballImg = new Image();
+      ballImg.src = "./assets/football.png"
+      ctx.drawImage(ballImg, ballObj.x[i], ballObj.y[i], 30, 20);
+			// ctx.beginPath();
+			// ctx.arc(ballObj.x[i], ballObj.y[i], rad, 0, Math.PI * 2);
+			// ctx.fillStyle = 'blue';
+			// ctx.fill();
+			// ctx.closePath();
 		}
 	}
 }
 
-// draw player
-function drawPlayer() {
-	contxt.beginPath();
-	contxt.rect(player.x, player.y, player.size, player.size);
-	contxt.fillStyle = 'black';
-	contxt.fill();
-	contxt.closePath();
+let catcher = {
+	x: 380,
+	y: 600,
+  w: 80,
+  h: 100
+};
+
+function drawCatcher() {
+  let catcherImg = new Image();
+  catcherImg.src = "./assets/catcher.png";
+  ctx.drawImage(catcherImg, catcher.x, catcher.y, catcher.w, catcher.h);
+	// ctx.beginPath();
+	// ctx.rect(player.x, player.y, player.size, player.size);
+	// ctx.fillStyle = 'black';
+	// ctx.fill();
+	// ctx.closePath();
 }
 
-// moves objects in play
+// moves objects
 function playUpdate() {
-	if(lefty && player.x > 0){
-		player.x -= 6;
+	if (left && catcher.x > 0) {
+		catcher.x -= 10;
 	}
-	if(righty && player.x + player.size < canvas.width) {
-		player.x += 6;
+	if (right && catcher.x + catcher.w < canvas.width) {
+		catcher.x += 10;
 	}
-	for(let i = 0; i < numBalls; i++){
-		ballObj.y[i] += ballObj.speed;
+	for (let i = 0; i < numBalls; i++) {
+		ballObj.y[i] += 5;
 	}
-	
 	
 	// collision detection
-	for(let i = 0; i < numBalls; i++){
-		if(ballObj.state[i]){
-			if(player.x < ballObj.x[i] + rad && player.x + 30 + rad> ballObj.x[i] && player.y < ballObj.y[i] + rad && player.y + 30 > ballObj.y[i]){
+	for (let i = 0; i < numBalls; i++) {
+		if (ballObj.state[i]) {
+			if (catcher.x < ballObj.x[i] + rad && catcher.x + 30 + rad > ballObj.x[i] && catcher.y < ballObj.y[i] + rad && catcher.y + 30 > ballObj.y[i]){
 				score++
 				ballObj.state[i] = false;
 			}
 		}
-		if(ballObj.y[i] + rad > canvas.height){
+		if (ballObj.y[i] + rad > canvas.height) {
 			ballObj.x.shift();
 			ballObj.y.shift();
 			ballObj.state.shift();
-			track++;
 		}
 	}
-	
-	// switch(score){
-	// 	case 20:
-	// 		ballObj.speed = 2;
-	// 		level = 2;
-	// 		break;
-	// 	case 30:
-	// 		level = 3;
-	// 		break;
-	// 	case 40: 
-	// 		ballObj.speed = 3;
-	// 		level = 4;
-	// 		break;
-	// 	case 50:
-	// 		level = 5;
-	// 		break;
-	// }
-
 }
-//signals end of game and resets x, y, and state arrays for arcs
-function gamesOver(){
+
+function endGame() {
 	ballObj.x = [];
 	ballObj.y = [];
 	ballObj.state = [];
 	gameOver = true;
 }
 
-//resets game, life, and score counters
 function playAgain() {
 	gameOver = false;
-	level = 1;
 	score = 0;
 	lives = 3;
-	ballObj.speed = 1;
 }
-function draw(){
-	contxt.clearRect(0, 0, canvas.width, canvas.height);
-	if(!gameOver){
-		drawPlayer();
+
+function draw() {
+	ctx.clearRect(0, 0, canvas.width, canvas.height);
+	if (!gameOver) {
+		drawCatcher();
 		drawBall();
 		playUpdate();
-		drawNewGood();
-			
-		//score
-		contxt.fillStyle = "black";
-		contxt.font = "20px Helvetica";
-		contxt.textAlign = "left";
-		contxt.fillText("Score: " + score, 10, 25);
+		placeBall();
+		
+		ctx.fillStyle = "black";
+		ctx.font = "25px Times New Roman";
+		ctx.textAlign = "left";
+		ctx.fillText("Score: " + score, 50, 30);
 	
 		//lives
-		contxt.textAlign = "right";
-		contxt.fillText("Lives: " + lives, 500, 25);
+		ctx.textAlign = "right";
+		ctx.fillText("Lives: " + lives, 710, 30);
 	}
-	else{
-		contxt.fillStyle = "black";
-		contxt.font = "50px Helvetica";
-		contxt.textAlign = "center";
-		contxt.fillText("GAME OVER!", canvas.width/2, 175);
-		
-		contxt.font = "20px Helvetica";
-		contxt.fillText("PRESS SPACE TO PLAY", canvas.width/2, 475);
-		
-		contxt.fillText("FINAL SCORE: " + score, canvas.width/2, 230);
-	}
-	// document.getElementById("level").innerHTML = "Level: " + level;
 	requestAnimationFrame(draw);
 }
 
