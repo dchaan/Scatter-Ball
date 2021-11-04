@@ -23,10 +23,10 @@ function keyDown(e) {
 	}
 }
 function keyUp(e) {
-	if(e.keyCode == 39){
+	if (e.keyCode == 39) {
 		right = false;
 	}
-	else if(e.keyCode == 37){
+	else if (e.keyCode == 37) {
 		left = false;
 	}
 }
