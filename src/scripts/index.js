@@ -31,7 +31,7 @@ function keyUp(e) {
 	}
 }
 
-let ballObj = {
+let ball = {
 	x:[],
 	y:[],
 	state: []
@@ -40,19 +40,19 @@ let ballObj = {
 // place ball at random x coordinate
 function placeBall() {
 	if (Math.random() < .02) {
-		ballObj.x.push(Math.random() * canvas.width - 50);
-		ballObj.y.push(0);
-		ballObj.state.push(true);
+		ball.x.push(Math.random() * canvas.width - 50);
+		ball.y.push(0);
+		ball.state.push(true);
 	}
-	numBalls = ballObj.x.length;
+	numBalls = ball.x.length;
 }
 
 function drawBall() {
 	for (let i = 0; i < numBalls; i++) {
-		if (ballObj.state[i] === true) {
+		if (ball.state[i] === true) {
       let ballImg = new Image();
       ballImg.src = "./assets/football.png"
-      ctx.drawImage(ballImg, ballObj.x[i], ballObj.y[i], 30, 20);
+      ctx.drawImage(ballImg, ball.x[i], ball.y[i], 30, 20);
 		}
 	}
 }
@@ -79,29 +79,29 @@ function playUpdate() {
 		catcher.x += 10;
 	}
 	for (let i = 0; i < numBalls; i++) {
-		ballObj.y[i] += 5;
+		ball.y[i] += 5;
 	}
 	
 	// collision detection
 	for (let i = 0; i < numBalls; i++) {
-		if (ballObj.state[i]) {
-			if (catcher.x < ballObj.x[i] + rad && catcher.x + 30 + rad > ballObj.x[i] && catcher.y < ballObj.y[i] + rad && catcher.y + 30 > ballObj.y[i]){
+		if (ball.state[i]) {
+			if (catcher.x < ball.x[i] + rad && catcher.x + 30 + rad > ball.x[i] && catcher.y < ball.y[i] + rad && catcher.y + 30 > ball.y[i]){
 				score++
-				ballObj.state[i] = false;
+				ball.state[i] = false;
 			}
 		}
-		if (ballObj.y[i] + rad > canvas.height) {
-			ballObj.x.shift();
-			ballObj.y.shift();
-			ballObj.state.shift();
+		if (ball.y[i] + rad > canvas.height) {
+			ball.x.shift();
+			ball.y.shift();
+			ball.state.shift();
 		}
 	}
 }
 
 function endGame() {
-	ballObj.x = [];
-	ballObj.y = [];
-	ballObj.state = [];
+	ball.x = [];
+	ball.y = [];
+	ball.state = [];
 	gameOver = true;
 }
 
