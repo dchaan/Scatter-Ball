@@ -53,11 +53,6 @@ function drawBall() {
       let ballImg = new Image();
       ballImg.src = "./assets/football.png"
       ctx.drawImage(ballImg, ballObj.x[i], ballObj.y[i], 30, 20);
-			// ctx.beginPath();
-			// ctx.arc(ballObj.x[i], ballObj.y[i], rad, 0, Math.PI * 2);
-			// ctx.fillStyle = 'blue';
-			// ctx.fill();
-			// ctx.closePath();
 		}
 	}
 }
@@ -73,11 +68,6 @@ function drawCatcher() {
   let catcherImg = new Image();
   catcherImg.src = "./assets/catcher.png";
   ctx.drawImage(catcherImg, catcher.x, catcher.y, catcher.w, catcher.h);
-	// ctx.beginPath();
-	// ctx.rect(player.x, player.y, player.size, player.size);
-	// ctx.fillStyle = 'black';
-	// ctx.fill();
-	// ctx.closePath();
 }
 
 // moves objects
