@@ -2,7 +2,7 @@ let canvas = document.getElementById("canvas");
 let ctx = canvas.getContext("2d");
 document.addEventListener("keydown", keyDown, false);
 document.addEventListener("keyup", keyUp, false);
-document.getElementById("start-button").addEventListener("click", playAgain);
+document.getElementById("start-button").addEventListener("click", play);
 // document.getElementById('start-button').addEventListener('click', togglePause);
 
 let left = false;
@@ -12,8 +12,6 @@ let score = 0;
 let numBalls = 0;
 let rad = 30;
 let paused = false;
-
-
 
 // key funcs
 function keyDown(e) {
@@ -117,7 +115,7 @@ function endGame() {
 	gameOver = true;
 }
 
-function playAgain() {
+function play() {
 	gameOver = false;
 	score = 0;
 }
