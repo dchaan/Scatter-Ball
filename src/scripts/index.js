@@ -1,20 +1,22 @@
 let canvas = document.getElementById("canvas");
 let ctx = canvas.getContext("2d");
+document.addEventListener("keydown", keyDown, false);
+document.addEventListener("keyup", keyUp, false);
+document.getElementById("start-button").addEventListener("click", playAgain);
+// document.getElementById('start-button').addEventListener('click', togglePause);
+
 let left = false;
 let right = false;
 let gameOver = true;
 let score = 0;
-let lives = 3;
 let numBalls = 0;
 let rad = 30;
 let paused = false;
 
-document.addEventListener("keydown", keysDown, false);
-document.addEventListener("keyup", keysUp, false);
-document.getElementById("start-button").addEventListener("click", playAgain);
+
 
 // key funcs
-function keysDown(e) {
+function keyDown(e) {
 	if (e.keyCode == 39) {
 		right = true;
 	}
@@ -22,7 +24,7 @@ function keysDown(e) {
 		left = true;
 	}
 }
-function keysUp(e) {
+function keyUp(e) {
 	if(e.keyCode == 39){
 		right = false;
 	}
@@ -118,7 +120,11 @@ function endGame() {
 function playAgain() {
 	gameOver = false;
 	score = 0;
-	lives = 3;
+}
+
+function togglePause() {
+  paused = !paused;
+  draw();
 }
 
 function draw() {
@@ -133,11 +139,8 @@ function draw() {
 		ctx.font = "25px Times New Roman";
 		ctx.textAlign = "left";
 		ctx.fillText("Score: " + score, 50, 30);
-	
-		//lives
-		ctx.textAlign = "right";
-		ctx.fillText("Lives: " + lives, 710, 30);
-	}
+  }
+
 	requestAnimationFrame(draw);
 }
 
