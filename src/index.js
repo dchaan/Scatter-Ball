@@ -1,3 +1,5 @@
+document.addEventListener('DOMContentLoaded', () => {
+
 let canvas = document.getElementById("canvas");
 let ctx = canvas.getContext("2d");
 document.addEventListener("keydown", keyDown, false);
@@ -23,10 +25,10 @@ function keyDown(e) {
 	}
 }
 function keyUp(e) {
-	if (e.keyCode == 39) {
+	if(e.keyCode == 39){
 		right = false;
 	}
-	else if (e.keyCode == 37) {
+	else if(e.keyCode == 37){
 		left = false;
 	}
 }
@@ -133,4 +135,4 @@ function draw() {
 }
 
 draw();
-
+})
