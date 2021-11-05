@@ -1,7 +1,8 @@
-# Scatter-Ball
+# Field Goal Kick
+https://dchaan.github.io/Scatter-Ball/
 
 Game: 
-<br>Scatter Ball (carnival game)
+<br>Field Goal Kick
 
 Background: 
 <br>
