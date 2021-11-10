@@ -1,5 +1,5 @@
 # Field Goal Kick
-https://dchaan.github.io/Scatter-Ball/
+https://github.com/dchaan/Field-Goal-Kick
 
 Game: 
 <br>Field Goal Kick
