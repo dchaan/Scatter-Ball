@@ -1,5 +1,4 @@
-# Field Goal Kick
-https://github.com/dchaan/Field-Goal-Kick
+# [Field Goal Kick](https://github.com/dchaan/Field-Goal-Kick)
 
 Game: 
 <br>Field Goal Kick
