@@ -4,28 +4,29 @@
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="./dist/main.css" />
     <title>Scatter Ball</title>
-    <style>
-      body {
-        height: 100vh;
-        margin: 0;
-        padding: 0;
-        width: 100%;
-        background: url("assets/background.jpg") center center no-repeat;
-        display: flex;
-        align-items: center;
-      }
-
-      canvas {
-        display: block;
-        margin: auto;
-        border-radius: 20px;
-      }
-    </style>
   </head>
-
   <body>
+    <div class="left-container">
+      <div class="title">
+        Scatter Ball
+      </div>
+      <div class="instructions-container">
+        <p class="instructions-sub">
+          Use the <- and -> keys to move the basket.<br>
+          Catch the balls as they fall.<br>
+          Each ball caught is 1 point.<br>
+          You have 3 lives!
+        </p>
+      </div>
+    </div>
     <script type="text/javascript" src="./src/phaser/dist/phaser.min.js"></script>
     <script type="text/javascript" src="./src/index.js"></script>
   </body>
+  <footer class="footer-container">
+    <a href="https://dchaan.github.io/Portfolio/"><img src="/assets/portfolio.png" class="footer-img"/></a>
+    <a href="https://www.linkedin.com/in/david-chan-4b1929185/"><img src="/assets/linkedin.png" class="footer-img"/></a>
+    <a href="https://github.com/dchaan"><img src="/assets/github.png" class="footer-img"/></a>
+  </footer>
 </html>

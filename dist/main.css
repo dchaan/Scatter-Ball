@@ -1,0 +1,75 @@
+body {
+  height: 100vh;
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  background: black;
+  display: flex;
+  align-items: center;
+}
+
+canvas {
+  width: 600px;
+  height: 800px;
+  display: flex;
+  margin: auto;
+  margin-top: 20px;
+  border-radius: 20px;
+}
+
+.left-container {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  margin: 50px;
+  margin-right: -300px;
+}
+
+.title {
+  color: white;
+  font-size: 60px;
+  font-weight: bold;
+  align-items: center;
+  justify-content: center;
+  margin-top: 20px;
+  padding: 20px;
+  background: url("../assets/popup.png") center no-repeat
+}
+
+.instructions-cointainer {
+  color: white;
+  background: url("../assets/popup.png") center no-repeat;
+}
+
+.instructions-title {
+  color: white;
+  background: url("../assets/popup.png") center no-repeat;
+  padding: 10px;
+}
+
+.instructions-sub {
+  font-size: 20px;
+  color: white;
+  line-height: 2;
+  background: url("../assets/popup.png") center no-repeat;
+  padding: 5px;
+}
+
+.footer-container {
+  display: block;
+  color: white;
+  width: 352px;
+  margin: 10px;
+  margin-left: -52px;
+  background: url("../assets/popup.png") center no-repeat;
+  justify-content: space-between;
+}
+
+.footer-img {
+  display: inline-block;
+  align-items: center;
+  justify-content: space-between;
+  padding: 5px;
+  margin-right: 20px;
+  margin-left: 20px;
+}
