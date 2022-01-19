@@ -1,138 +1,200 @@
-document.addEventListener('DOMContentLoaded', () => {
 
-let canvas = document.getElementById("canvas");
-let ctx = canvas.getContext("2d");
-document.addEventListener("keydown", keyDown, false);
-document.addEventListener("keyup", keyUp, false);
-document.getElementById("start-button").addEventListener("click", play);
-// document.getElementById('start-button').addEventListener('click', togglePause);
+let config = {
+  type: Phaser.AUTO,
+  width: 600,
+  height: 800,
+  physics: {
+    default: "arcade",
+    arcade: {
+      gravity: { y: 300 },
+      debug: false,
+    },
+  },
+  scene: {
+    preload: preload,
+    create: create,
+    update: update,
+  },
+};
 
-let left = false;
-let right = false;
-let gameOver = true;
+let game = new Phaser.Game(config);
+
+let balls;
+let blocks = [];
+let basket;
+let cursors;
+let scoreText;
+let lifesText;
+let gameOverText;
+let pauseButton;
+let lifes = 3;
 let score = 0;
-let numBalls = 0;
-let rad = 30;
-let paused = false;
+let gameOver = false;
+let isPaused = false;
 
-// key funcs
-function keyDown(e) {
-	if (e.keyCode == 39) {
-		right = true;
-	}
-	else if (e.keyCode == 37) {
-		left = true;
-	}
-}
-function keyUp(e) {
-	if(e.keyCode == 39){
-		right = false;
-	}
-	else if(e.keyCode == 37){
-		left = false;
-	}
+function preload() {
+  this.load.image("background", "assets/bg.jpg");
+  this.load.image("block", "assets/red_ball.png");
+  this.load.image("balls", "assets/shinyball.png");
+  this.load.image("basket", "assets/basket.png");
+  this.load.image("border", "assets/border.png");
+  this.load.image("strip2", "assets/strip2.png");
+  this.load.image("strip1", "assets/strip1.png");
+  this.load.image("popup", "assets/popup.png");
+  this.load.image("play_btn", "assets/play_btn.png");
+  this.load.image("retry_btn", "assets/retry_btn.png");
+  this.load.image("pause_btn", "assets/pause_btn.png");
 }
 
-let ball = {
-	x:[],
-	y:[],
-	state: []
-};
+function create() {
+  this.add.image(300, 400, "background").setScale(0.5);
 
-// place ball at random x coordinate
-function placeBall() {
-	if (Math.random() < .02) {
-		ball.x.push(Math.random() * canvas.width - 50);
-		ball.y.push(0);
-		ball.state.push(true);
-	}
-	numBalls = ball.x.length;
-}
+  balls = this.physics.add.group({
+    key: "balls",
+    frameQuantity: 3,
+    setXY: { x: 150, y: 0, stepX: 150 },
+  });
 
-function drawBall() {
-	for (let i = 0; i < numBalls; i++) {
-		if (ball.state[i] === true) {
-      let ballImg = new Image();
-      ballImg.src = "./assets/football.png"
-      ctx.drawImage(ballImg, ball.x[i], ball.y[i], 30, 20);
-		}
-	}
-}
+  balls.children.iterate(function (ball) {
+    ball.setBounce(Phaser.Math.FloatBetween(0.4, 0.8));
+    ball.setCollideWorldBounds(Phaser.Math.FloatBetween(0.4, 0.8));
+    ball.setData("active", true);
+    ball.setCircle(16);
+    ball.depth = 10;
+  });
 
-let catcher = {
-	x: 380,
-	y: 600,
-  w: 80,
-  h: 100
-};
+  for (let i = 1; i < 9; i++) {
+    blocks[i] = this.physics.add.staticGroup({
+      key: "block",
+      frameQuantity: 7,
+    });
 
-function drawCatcher() {
-  let catcherImg = new Image();
-  catcherImg.src = "./assets/catcher.png";
-  ctx.drawImage(catcherImg, catcher.x, catcher.y, catcher.w, catcher.h);
-}
+    if (i % 2 == 0) {
+      Phaser.Actions.PlaceOnLine(blocks[i].getChildren(), new Phaser.Geom.Line(65, i * 65 + 65, 545, i * 65 + 65));
+    } else {
+      Phaser.Actions.PlaceOnLine(blocks[i].getChildren(), new Phaser.Geom.Line(102.5, i * 65 + 65, 582.5, i * 65 + 65));
+    }
 
-// moves objects
-function playUpdate() {
-	if (left && catcher.x > 0) {
-		catcher.x -= 10;
-	}
-	if (right && catcher.x + catcher.w < canvas.width) {
-		catcher.x += 10;
-	}
-	for (let i = 0; i < numBalls; i++) {
-		ball.y[i] += 5;
-	}
-	
-	// collision detection
-	for (let i = 0; i < numBalls; i++) {
-		if (ball.state[i]) {
-			if (catcher.x < ball.x[i] + rad && catcher.x + 30 + rad > ball.x[i] && catcher.y < ball.y[i] + rad && catcher.y + 30 > ball.y[i]){
-				score++
-				ball.state[i] = false;
-			}
-		}
-		if (ball.y[i] + rad > canvas.height) {
-			ball.x.shift();
-			ball.y.shift();
-			ball.state.shift();
-		}
-	}
-}
+    blocks[i].children.iterate(function (block) {
+      block.setCircle(8);
+    });
 
-function endGame() {
-	ball.x = [];
-	ball.y = [];
-	ball.state = [];
-	gameOver = true;
-}
+    blocks[i].refresh();
 
-function play() {
-	gameOver = false;
-	score = 0;
-}
-
-function togglePause() {
-  paused = !paused;
-  draw();
-}
-
-function draw() {
-	ctx.clearRect(0, 0, canvas.width, canvas.height);
-	if (!gameOver) {
-		drawCatcher();
-		drawBall();
-		playUpdate();
-		placeBall();
-		
-		ctx.fillStyle = "black";
-		ctx.font = "25px Times New Roman";
-		ctx.textAlign = "left";
-		ctx.fillText("Score: " + score, 50, 30);
+    this.physics.add.collider(balls, blocks[i]);
   }
 
-	requestAnimationFrame(draw);
+  this.physics.add.collider(balls, balls);
+
+  basket = this.physics.add.image(100, 750, "basket").setScale(0.1);
+  basket.setCollideWorldBounds();
+  basket.setBodySize(1050, 1000, false);
+  basket.depth = 11;
+
+  let border = this.physics.add.staticGroup();
+  border.create(1, 400, "strip1").refreshBody();
+  border.create(596, 400, "strip1").refreshBody();
+  border.create(300, 806, "strip2").refreshBody();
+  let downbr = this.physics.add.staticGroup();
+  downbr.create(300, 804, "strip2").refreshBody();
+
+  this.physics.add.collider(border, balls);
+
+  let basketcd = this.physics.add.overlap(basket, balls, collectBall, null, this);
+  let bordercd = this.physics.add.collider(downbr, balls, collectFail, null, this);
+
+  this.physics.add
+    .staticGroup({
+      key: "border",
+      setXY: { x: 300, y: 400 },
+    })
+    .children.iterate(function (child) {
+      child.setScale(0.58, 0.44);
+      child.depth = 12;
+    });
+
+  scoreText = this.add.text(30, 28, "Score: " + score, { font: "25px Georgia Black", fill: "#fff", fontWeight: "bold" });
+  scoreText.setShadow(3, 3, "rgba(0,0,0,0.5)", 5);
+  lifesText = this.add.text(30, 64, "Life: " + lifes, { font: "25px Georgia Black", fill: "#fff", fontWeight: "bold" });
+  lifesText.setShadow(3, 3, "rgba(0,0,0,0.5)", 5);
+  gameOverText = this.add.text(190, 380, "", { font: "30px Georgia Black", fill: "#fff", fontWeight: "bold", align: "center" });
+  gameOverText.setShadow(3, 3, "rgba(0,0,0,0.5)", 5);
+
+  pauseButton = this.add.image(530, 60, "pause_btn").setInteractive({ cursor: "pointer" });
+  pauseButton.name = "pause_btn";
+  pauseButton.setScale(0.9);
+
+  this.input.on("gameobjectdown", pauseGame, this);
+
+  cursors = this.input.keyboard.createCursorKeys();
 }
 
-draw();
-})
+function update() {
+  if (gameOver) {
+    return;
+  }
+
+  if (cursors.left.isDown) {
+    basket.setVelocityX(-200);
+  } else if (cursors.right.isDown) {
+    basket.setVelocityX(200);
+  } else {
+    basket.setVelocityX(0);
+  }
+}
+
+function collectBall(player, ball) {
+  let active = ball.getData("active");
+  if (active) {
+    ball.disableBody(true, true);
+    score += 1;
+    scoreText.setText("Score: " + score);
+    ball.enableBody(true, Phaser.Math.RND.between(75, 525), 0, true, true);
+  }
+}
+
+function collectFail(border, ball) {
+  let active = ball.getData("active");
+  if (active) {
+    ball.setData("active", false);
+    lifes -= 1;
+    lifesText.setText("Life: " + lifes);
+    if (lifes > 0) {
+      ball = balls.create(Phaser.Math.RND.between(75, 525), 0, "balls").refreshBody();
+      ball.setBounce(Phaser.Math.FloatBetween(0.4, 0.8));
+      ball.setCollideWorldBounds(Phaser.Math.FloatBetween(0.4, 0.8));
+      ball.setData("active", true);
+      ball.setCircle(16);
+      ball.depth = 10;
+    } else {
+      gameOverText.setText("Game Over");
+      pauseButton.setTexture("retry_btn");
+      this.physics.pause();
+      gameOver = true;
+    }
+  }
+}
+
+function pauseGame(pointer, button) {
+  if (!gameOver) {
+    if (button.name == "pause_btn") {
+      if (isPaused) {
+        pauseButton.setTexture("pause_btn");
+        gameOverText.setText("");
+        this.physics.resume();
+        isPaused = false;
+      } else {
+        pauseButton.setTexture("play_btn");
+        gameOverText.setText("Game Paused");
+        this.physics.pause();
+        isPaused = true;
+      }
+    }
+  } else {
+    this.scene.restart();
+    gameOver = false;
+    isPaused = false;
+    lifes = 3;
+    score = 0;
+  }
+}

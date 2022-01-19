@@ -1,41 +1,31 @@
 <!DOCTYPE html>
 <html lang="en">
-
-<head>
+  <head>
     <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
-    <link rel="stylesheet" href="./dist/main.css" />
-    <!-- <link rel="stylesheet" href="./src/index.scss" /> -->
-    <script src="./dist/main.js"></script>    
+    <title>Scatter Ball</title>
+    <style>
+      body {
+        height: 100vh;
+        margin: 0;
+        padding: 0;
+        width: 100%;
+        background: url("assets/background.jpg") center center no-repeat;
+        display: flex;
+        align-items: center;
+      }
 
+      canvas {
+        display: block;
+        margin: auto;
+        border-radius: 20px;
+      }
+    </style>
+  </head>
 
-    <title>Field Goal Kick</title>
-
-</head>
-
-<body>
-  <h1 class="title">Field Goal Kick</h1>
-  <div class="left">
-  <button id="start-button">Start</button>
-    <h2 class="instructions">Instructions</h2>
-    <p class="instructions2">
-      Use the <- and -> keys to move the field 
-      <br>
-      goal post. Catch the footballs as they fall. 
-      <br>
-      Each football caught is 1 point.
-    </p>
-  </div>
-  
-  <canvas id="canvas" width="760px" height="700px"></canvas>
-
-  <div class="right">
-    <a href="https://github.com/dchaan"><i class="fab fa-github"></i></a>
-  </div>  
+  <body>
+    <script type="text/javascript" src="./src/phaser/dist/phaser.min.js"></script>
+    <script type="text/javascript" src="./src/index.js"></script>
   </body>
-
-  <footer>
-    <audio controls loop autoplay src="./assets/crowd.mp3"></audio>
-  </footer>
 </html>

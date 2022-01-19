@@ -30,6 +30,7 @@
     "express": "^4.17.1",
     "mini-css-extract-plugin": "^2.4.3",
     "node-fetch": "^3.0.0",
+    "phaser": "^3.55.2",
     "regenerator-runtime": "^0.13.9",
     "sass": "^1.43.4",
     "sass-loader": "^12.3.0",
