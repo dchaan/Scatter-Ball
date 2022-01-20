@@ -19,57 +19,49 @@ canvas {
 
 .left-container {
   height: 100%;
+  width: 450px;
   display: flex;
   flex-direction: column;
-  margin: 50px;
+  padding: 50px;
   margin-right: -300px;
+}
+
+.title-container {
+  width: 100%;
+  text-align: center;
+  margin-top: 20px;
 }
 
 .title {
   color: white;
   font-size: 60px;
   font-weight: bold;
-  align-items: center;
-  justify-content: center;
-  margin-top: 20px;
   padding: 20px;
   background: url("../assets/popup.png") center no-repeat
 }
 
 .instructions-cointainer {
+  width: 100%;
   color: white;
   background: url("../assets/popup.png") center no-repeat;
-}
-
-.instructions-title {
-  color: white;
-  background: url("../assets/popup.png") center no-repeat;
-  padding: 10px;
 }
 
 .instructions-sub {
-  font-size: 20px;
+  font-size: 22px;
   color: white;
-  line-height: 2;
+  line-height: 1.5;
   background: url("../assets/popup.png") center no-repeat;
-  padding: 5px;
+  padding: 20px;
 }
 
 .footer-container {
-  display: block;
+  display: flex;
+  width: 100%;
   color: white;
-  width: 352px;
-  margin: 10px;
-  margin-left: -52px;
   background: url("../assets/popup.png") center no-repeat;
-  justify-content: space-between;
+  justify-content: space-evenly;
 }
 
 .footer-img {
-  display: inline-block;
-  align-items: center;
-  justify-content: space-between;
-  padding: 5px;
-  margin-right: 20px;
-  margin-left: 20px;
+  padding: 10px;
 }
