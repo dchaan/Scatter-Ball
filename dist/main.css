@@ -9,8 +9,8 @@ body {
 }
 
 canvas {
-  width: 600px;
-  height: 800px;
+  width: 550px;
+  height: 700px;
   display: flex;
   margin: auto;
   margin-top: 20px;
