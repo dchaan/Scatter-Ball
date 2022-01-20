@@ -6,7 +6,7 @@ let config = {
   physics: {
     default: "arcade",
     arcade: {
-      gravity: { y: 300 },
+      gravity: { y: 500 },
       debug: false,
     },
   },
@@ -114,11 +114,8 @@ function create() {
     });
 
   scoreText = this.add.text(30, 28, "Score: " + score, { font: "25px Georgia Black", fill: "#fff", fontWeight: "bold" });
-  scoreText.setShadow(3, 3, "rgba(0,0,0,0.5)", 5);
   lifesText = this.add.text(30, 64, "Life: " + lifes, { font: "25px Georgia Black", fill: "#fff", fontWeight: "bold" });
-  lifesText.setShadow(3, 3, "rgba(0,0,0,0.5)", 5);
-  gameOverText = this.add.text(190, 380, "", { font: "30px Georgia Black", fill: "#fff", fontWeight: "bold", align: "center" });
-  gameOverText.setShadow(3, 3, "rgba(0,0,0,0.5)", 5);
+  gameOverText = this.add.text(190, 380, "", { font: "50px Georgia Black", fill: "#fff", fontWeight: "bold", align: "center" });
 
   pauseButton = this.add.image(530, 60, "pause_btn").setInteractive({ cursor: "pointer" });
   pauseButton.name = "pause_btn";
@@ -135,9 +132,9 @@ function update() {
   }
 
   if (cursors.left.isDown) {
-    basket.setVelocityX(-200);
+    basket.setVelocityX(-300);
   } else if (cursors.right.isDown) {
-    basket.setVelocityX(200);
+    basket.setVelocityX(300);
   } else {
     basket.setVelocityX(0);
   }
