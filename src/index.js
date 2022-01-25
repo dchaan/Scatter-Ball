@@ -112,11 +112,11 @@ function create() {
       child.depth = 12;
     });
 
-  scoreText = this.add.text(30, 28, "Score: " + score, { font: "25px Georgia Black", fill: "#fff", fontWeight: "bold" });
-  livesText = this.add.text(30, 64, "Life: " + lives, { font: "25px Georgia Black", fill: "#fff", fontWeight: "bold" });
+  scoreText = this.add.text(30, 25, "Score: " + score, { font: "25px Georgia Black", fill: "#fff", fontWeight: "bold" });
+  livesText = this.add.text(30, 58, "Life: " + lives, { font: "25px Georgia Black", fill: "#fff", fontWeight: "bold" });
   gameOverText = this.add.text(190, 380, "", { font: "50px Georgia Black", fill: "#fff", fontWeight: "bold", align: "center" });
 
-  pauseButton = this.add.image(530, 60, "pause_btn").setInteractive({ cursor: "pointer" });
+  pauseButton = this.add.image(530, 50, "pause_btn").setInteractive({ cursor: "pointer" });
   pauseButton.name = "pause_btn";
   pauseButton.setScale(0.9);
 
