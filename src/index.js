@@ -19,7 +19,7 @@ let config = {
 let game = new Phaser.Game(config);
 
 let balls;
-let blocks = [];
+let pegs = [];
 let basket;
 let cursors;
 let scoreText;
@@ -33,7 +33,7 @@ let isPaused = false;
 
 function preload() {
   this.load.image("background", "assets/bg.jpg");
-  this.load.image("block", "assets/red_ball.png");
+  this.load.image("peg", "assets/red_ball.png");
   this.load.image("balls", "assets/shinyball.png");
   this.load.image("basket", "assets/basket.png");
   this.load.image("border", "assets/border.png");
@@ -47,58 +47,60 @@ function preload() {
 
 function create() {
   this.add.image(300, 400, "background").setScale(0.5);
-
   balls = this.physics.add.group({
     key: "balls",
     frameQuantity: 3,
-    setXY: { x: 150, y: 0, stepX: 150 },
+    setXY: { x: 100, y: 0, stepX: 100 },
   });
 
   balls.children.iterate(function (ball) {
-    ball.setBounce(Phaser.Math.FloatBetween(0.4, 0.8));
-    ball.setCollideWorldBounds(Phaser.Math.FloatBetween(0.4, 0.8));
+    // ball collision (bodyA.restitution, bodyB.restitution)
+    ball.setBounce(Phaser.Math.FloatBetween(0.4, 0.7));
+    // ball collision with borders (bodyA.restitution, bodyB.restitution)
+    ball.setCollideWorldBounds(Phaser.Math.FloatBetween(0.4, 0.7));
+    // ball logic being updated
     ball.setData("active", true);
     ball.setCircle(16);
     ball.depth = 10;
   });
-
+  // render pegs
   for (let i = 1; i < 9; i++) {
-    blocks[i] = this.physics.add.staticGroup({
-      key: "block",
+    pegs[i] = this.physics.add.staticGroup({
+      key: "peg",
       frameQuantity: 7,
     });
-
+    // place pegs
     if (i % 2 == 0) {
-      Phaser.Actions.PlaceOnLine(blocks[i].getChildren(), new Phaser.Geom.Line(65, i * 65 + 65, 545, i * 65 + 65));
+      Phaser.Actions.PlaceOnLine(pegs[i].getChildren(), new Phaser.Geom.Line(65, i * 65 + 65, 545, i * 65 + 65));
     } else {
-      Phaser.Actions.PlaceOnLine(blocks[i].getChildren(), new Phaser.Geom.Line(102.5, i * 65 + 65, 582.5, i * 65 + 65));
+      Phaser.Actions.PlaceOnLine(pegs[i].getChildren(), new Phaser.Geom.Line(102.5, i * 65 + 65, 582.5, i * 65 + 65));
     }
 
-    blocks[i].children.iterate(function (block) {
+    pegs[i].children.iterate(function (block) {
       block.setCircle(8);
     });
 
-    blocks[i].refresh();
-
-    this.physics.add.collider(balls, blocks[i]);
+    pegs[i].refresh();
+    // collision balls and pegs
+    this.physics.add.collider(balls, pegs[i]);
   }
 
   this.physics.add.collider(balls, balls);
-
+  // render basket
   basket = this.physics.add.image(300, 750, "basket").setScale(0.1);
   basket.setCollideWorldBounds();
   basket.setBodySize(1050, 1000, false);
   basket.depth = 11;
-
+  // render game border
   let border = this.physics.add.staticGroup();
   border.create(1, 400, "strip1").refreshBody();
   border.create(596, 400, "strip1").refreshBody();
   border.create(300, 806, "strip2").refreshBody();
   let downbr = this.physics.add.staticGroup();
   downbr.create(300, 804, "strip2").refreshBody();
-
+  // collisiopn balls and border
   this.physics.add.collider(border, balls);
-
+  // collision balls and basket
   let basketcd = this.physics.add.overlap(basket, balls, collectBall, null, this);
   let bordercd = this.physics.add.collider(downbr, balls, collectFail, null, this);
 
@@ -129,7 +131,7 @@ function update() {
   if (gameOver) {
     return;
   }
-
+  // move basket
   if (cursors.left.isDown) {
     basket.setVelocityX(-400);
   } else if (cursors.right.isDown) {
@@ -138,7 +140,7 @@ function update() {
     basket.setVelocityX(0);
   }
 }
-
+// score counter
 function collectBall(player, ball) {
   let active = ball.getData("active");
   if (active) {
@@ -148,7 +150,7 @@ function collectBall(player, ball) {
     ball.enableBody(true, Phaser.Math.RND.between(75, 525), 0, true, true);
   }
 }
-
+// decrement lives 
 function collectFail(border, ball) {
   let active = ball.getData("active");
   if (active) {
