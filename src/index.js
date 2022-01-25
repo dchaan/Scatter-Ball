@@ -113,7 +113,7 @@ function create() {
     });
 
   scoreText = this.add.text(30, 28, "Score: " + score, { font: "25px Georgia Black", fill: "#fff", fontWeight: "bold" });
-  lifesText = this.add.text(30, 64, "Life: " + lives, { font: "25px Georgia Black", fill: "#fff", fontWeight: "bold" });
+  livesText = this.add.text(30, 64, "Life: " + lives, { font: "25px Georgia Black", fill: "#fff", fontWeight: "bold" });
   gameOverText = this.add.text(190, 380, "", { font: "50px Georgia Black", fill: "#fff", fontWeight: "bold", align: "center" });
 
   pauseButton = this.add.image(530, 60, "pause_btn").setInteractive({ cursor: "pointer" });
@@ -153,9 +153,9 @@ function collectFail(border, ball) {
   let active = ball.getData("active");
   if (active) {
     ball.setData("active", false);
-    lifes -= 1;
-    lifesText.setText("Life: " + lifes);
-    if (lifes > 0) {
+    lives -= 1;
+    livesText.setText("Life: " + lives);
+    if (lives > 0) {
       ball = balls.create(Phaser.Math.RND.between(75, 525), 0, "balls").refreshBody();
       ball.setBounce(Phaser.Math.FloatBetween(0.4, 0.8));
       ball.setCollideWorldBounds(Phaser.Math.FloatBetween(0.4, 0.8));
@@ -190,7 +190,7 @@ function pauseGame(pointer, button) {
     this.scene.restart();
     gameOver = false;
     isPaused = false;
-    lifes = 3;
+    lives = 3;
     score = 0;
   }
 }
