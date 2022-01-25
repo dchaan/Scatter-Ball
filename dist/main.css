@@ -56,12 +56,24 @@ canvas {
 
 .footer-container {
   display: flex;
+  flex-direction: column;
   width: 100%;
   color: white;
   background: url("../assets/popup.png") center no-repeat;
+}
+
+.footer-links {
+  width: 100%;
+  display: flex;
   justify-content: space-evenly;
 }
 
 .footer-img {
   padding: 10px;
+}
+
+.footer-text {
+  margin-top: -2px;
+  margin-bottom: 2px;
+  text-align: center;
 }

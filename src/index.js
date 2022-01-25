@@ -1,4 +1,3 @@
-
 let config = {
   type: Phaser.AUTO,
   width: 600,
@@ -24,10 +23,10 @@ let blocks = [];
 let basket;
 let cursors;
 let scoreText;
-let lifesText;
+let livesText;
 let gameOverText;
 let pauseButton;
-let lifes = 3;
+let lives = 3;
 let score = 0;
 let gameOver = false;
 let isPaused = false;
@@ -114,7 +113,7 @@ function create() {
     });
 
   scoreText = this.add.text(30, 28, "Score: " + score, { font: "25px Georgia Black", fill: "#fff", fontWeight: "bold" });
-  lifesText = this.add.text(30, 64, "Life: " + lifes, { font: "25px Georgia Black", fill: "#fff", fontWeight: "bold" });
+  lifesText = this.add.text(30, 64, "Life: " + lives, { font: "25px Georgia Black", fill: "#fff", fontWeight: "bold" });
   gameOverText = this.add.text(190, 380, "", { font: "50px Georgia Black", fill: "#fff", fontWeight: "bold", align: "center" });
 
   pauseButton = this.add.image(530, 60, "pause_btn").setInteractive({ cursor: "pointer" });
