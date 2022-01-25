@@ -159,8 +159,8 @@ function collectFail(border, ball) {
     livesText.setText("Life: " + lives);
     if (lives > 0) {
       ball = balls.create(Phaser.Math.RND.between(75, 525), 0, "balls").refreshBody();
-      ball.setBounce(Phaser.Math.FloatBetween(0.4, 0.8));
-      ball.setCollideWorldBounds(Phaser.Math.FloatBetween(0.4, 0.8));
+      ball.setBounce(Phaser.Math.FloatBetween(0.4, 0.7));
+      ball.setCollideWorldBounds(Phaser.Math.FloatBetween(0.4, 0.7));
       ball.setData("active", true);
       ball.setCircle(16);
       ball.depth = 10;
