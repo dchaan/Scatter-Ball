@@ -85,7 +85,7 @@ function create() {
 
   this.physics.add.collider(balls, balls);
 
-  basket = this.physics.add.image(100, 750, "basket").setScale(0.1);
+  basket = this.physics.add.image(300, 750, "basket").setScale(0.1);
   basket.setCollideWorldBounds();
   basket.setBodySize(1050, 1000, false);
   basket.depth = 11;
@@ -131,9 +131,9 @@ function update() {
   }
 
   if (cursors.left.isDown) {
-    basket.setVelocityX(-300);
+    basket.setVelocityX(-400);
   } else if (cursors.right.isDown) {
-    basket.setVelocityX(300);
+    basket.setVelocityX(400);
   } else {
     basket.setVelocityX(0);
   }
