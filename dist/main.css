@@ -9,11 +9,13 @@ body {
 }
 
 canvas {
-  width: 550px;
-  height: 700px;
+  width: 35%;
+  max-width: 590px;
+  height: 80%;
+  max-height: 800px;
   display: flex;
   margin: auto;
-  margin-top: 20px;
+  margin-top: 50px;
   border-radius: 20px;
 }
 
@@ -29,7 +31,7 @@ canvas {
 .title-container {
   width: 100%;
   text-align: center;
-  margin-top: 20px;
+  margin-top: 50px;
 }
 
 .title {
